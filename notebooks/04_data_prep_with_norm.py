@@ -19,6 +19,7 @@ rankings = pd.concat(
     [pd.read_csv(raw_dir / f"atp_rankings_{decade}.csv") for decade in decades],
     ignore_index=True,
 )
+
 # %% turn each match into two player-match rows
 winner_rows = df.assign(
     match_id=df["tourney_name"] + "_" + df["match_num"].astype(str),
@@ -166,6 +167,7 @@ features = [
     "bp_saved_pct",
     "return_points_won_pct",
     "bp_converted_pct",
+    "win",
     "rank",
 ]
 
@@ -177,7 +179,6 @@ player_stats = player_stats[player_stats["matches_played"] >= 40].copy()
 
 player_stats.rename(columns={"win": "win_rate", "rank": "avg_rank"}, inplace=True)
 player_stats.reset_index(inplace=True)
-
 # %% normalize style within ability bands (we don't want clusters to just be good vs. better players)
 
 
@@ -190,6 +191,7 @@ player_stats["rank_band"] = pd.qcut(
 )
 
 features.remove("rank")
+features.remove("win")
 for col in features:
     player_stats[col + "_zscore"] = player_stats.groupby("rank_band", observed=True)[
         col
