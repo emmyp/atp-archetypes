@@ -4,9 +4,9 @@
 Map out playing-style archetypes on the ATP Tour using public match data. Phase 1 (current repo state) builds a hard-court baseline from 2018–2024 matches, normalizes for player strength, and runs unsupervised clustering to highlight contrasting styles.
 
 ## Data
-- `data/raw/atp_matches_2018-2024.csv`: match-level results from Jeff Sackmann (Kaggle/tennis-atp-tour). Filtered to hard courts.
-- `data/raw/atp_rankings_10s.csv`, `atp_rankings_20s.csv`: weekly rankings joined to matches to separate style from ability.
-- `data/raw/charting-m-*.csv`: point-by-point charting data (tennisabstract.com). Not yet integrated; earmarked for richer shot/serve patterns in the next phase.
+- `data/raw/atp_matches_*.csv`: match-level results from Jeff Sackmann (tennis-atp-tour).
+- `data/raw/atp_rankings_*.csv`: weekly rankings joined to matches to separate style from ability. Also from Jeff Sackmann (tennis-atp-tour).
+- `data/raw/charting-m-*.csv`: point-by-point charting data (JeffSackmann/tennis_MatchChartingProject). Not yet integrated; earmarked for richer shot/serve patterns in the next phase.
 - Processed outputs live in `data/processed/` (see below).
 
 ## Phase-1 pipeline
