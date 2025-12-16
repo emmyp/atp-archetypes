@@ -9,7 +9,7 @@ from sklearn.decomposition import PCA
 from sklearn.metrics import silhouette_samples, silhouette_score
 from sklearn.preprocessing import StandardScaler
 
-processed_dir = Path("../data/processed")
+processed_dir = Path("../../data/processed")
 stats = pd.read_csv(processed_dir / "player_stats_hard_2018_2024.csv")
 
 features = [

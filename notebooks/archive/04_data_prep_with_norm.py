@@ -4,7 +4,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-raw_dir = Path("../data/raw")
+raw_dir = Path("../../data/raw")
 
 years = range(2018, 2025)
 df = pd.concat(
@@ -198,5 +198,5 @@ for col in features:
     ].transform(zscore)
 
 # %% persist processed data
-processed_dir = Path("../data/processed")
+processed_dir = Path("../../data/processed")
 player_stats.to_csv(processed_dir / "player_stats_norm_hard_2018_2024.csv", index=False)

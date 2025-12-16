@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pandas as pd
 
-processed_dir = Path("../data/processed")
+processed_dir = Path("../../data/processed")
 pm = pd.read_csv(processed_dir / "atp_matches_hard_2018_2024.csv")
 
 # filter to players with at least 40 matches

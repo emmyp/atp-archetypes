@@ -4,7 +4,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-raw_dir = Path("../data/raw")
+raw_dir = Path("../../data/raw")
 
 years = range(2018, 2025)
 df = pd.concat(
@@ -88,5 +88,5 @@ player_matches = (
 )
 
 # %% persist processed data
-processed_dir = Path("../data/processed")
+processed_dir = Path("../../data/processed")
 player_matches.to_csv(processed_dir / "atp_matches_hard_2018_2024.csv", index=False)
