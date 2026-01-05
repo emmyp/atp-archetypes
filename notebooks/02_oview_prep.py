@@ -87,6 +87,5 @@ player_overview = (
     .reset_index()
 )
 # %% output
-
 out_dir = Path("../data/processed/features")
 player_overview.to_parquet(out_dir / "overview.parquet", index=False)
