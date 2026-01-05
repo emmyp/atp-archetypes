@@ -1,4 +1,4 @@
-import np
+import numpy as np
 
 
 def safe_div(a, b):
