@@ -7,7 +7,6 @@ from utils import safe_div
 input_dir = Path("../data/filtered")
 oview = pd.read_parquet(input_dir / "overview.parquet")
 # %% filter
-
 o = oview.copy()
 
 # match totals: one row per match_id x player
