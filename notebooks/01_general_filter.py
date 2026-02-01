@@ -17,7 +17,7 @@ rally = pd.read_csv(raw_dir / "charting-m-stats-Rally.csv")
 netpts = pd.read_csv(raw_dir / "charting-m-stats-NetPoints.csv")
 snv = pd.read_csv(raw_dir / "charting-m-stats-SnV.csv")
 
-# %% ATP - hard-court matches (2018-2024)
+# %% ATP - hard-court matches (2018-2025)
 
 matches["Date"] = pd.to_datetime(matches["Date"], format="%Y%m%d", errors="coerce")
 matches = matches.dropna(subset=["Date"])
@@ -25,7 +25,7 @@ matches = matches.dropna(subset=["Date"])
 mask = (
     (matches["Surface"] == "Hard")
     & (matches["Date"].dt.year >= 2018)
-    & (matches["Date"].dt.year <= 2024)
+    & (matches["Date"].dt.year <= 2025)
 )
 matches_hard = matches.loc[mask].copy()
 
@@ -53,5 +53,4 @@ out_dir = Path("../data/filtered")
 
 for name, df in tables.items():
     filtered = df[df["match_id"].isin(set(match_ids))].copy()
-
     filtered.to_parquet(out_dir / f"{name}.parquet", index=False)
