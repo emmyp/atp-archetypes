@@ -49,7 +49,7 @@ def build_player_overview(df: pd.DataFrame) -> pd.DataFrame:
         "return_pts",
         "return_pts_won",
         # pressure
-        "bk_saved",
+        "bp_saved",
         "bk_pts",
         # aggression / errors
         "winners",
@@ -143,3 +143,7 @@ def main() -> None:
     df = load_overview(args.input_dir)
     out = build_player_overview(df)
     out.to_parquet(args.out_dir / FILE_NAME, index=False)
+
+
+if __name__ == "__main__":
+    main()
