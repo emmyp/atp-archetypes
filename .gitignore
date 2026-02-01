@@ -1,2 +1,4 @@
 **/.DS_Store
-notebooks/__pycache__/utils.cpython-314.pyc
+notebooks/__pycache__/
+notebooks/diagnostics/
+notebooks/test.ipynb
