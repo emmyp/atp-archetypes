@@ -1,4 +1,4 @@
 **/.DS_Store
 notebooks/__pycache__/
 notebooks/diagnostics/
-notebooks/test.ipynb
+notebooks/diags.ipynb

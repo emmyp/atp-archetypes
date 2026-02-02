@@ -2,7 +2,7 @@ import argparse
 from pathlib import Path
 
 import pandas as pd
-from utils import safe_div
+from utils import safe_div, winsorize_features
 
 FILE_NAME = "overview.parquet"
 KEYS = ["match_id", "player"]
@@ -16,6 +16,31 @@ def parse_args() -> argparse.Namespace:
     )
     p.add_argument("--input-dir", type=Path, default=Path("../data/filtered"))
     p.add_argument("--out-dir", type=Path, default=Path("../data/processed/features"))
+
+    p.add_argument(
+        "--winsorize",
+        action="store_true",
+        help="clip numeric feature columns to percentile bounds",
+    )
+    p.add_argument(
+        "--winsor-p-low",
+        type=float,
+        default=0.005,
+        help="lower percentile bound (e.g., 0.005)",
+    )
+    p.add_argument(
+        "--winsor-p-high",
+        type=float,
+        default=0.995,
+        help="upper percentile bound (e.g., 0.995)",
+    )
+    p.add_argument(
+        "--winsor-min-matches",
+        type=int,
+        default=8,
+        help="cohort threshold used to compute bounds",
+    )
+
     return p.parse_args()
 
 
@@ -142,6 +167,23 @@ def main() -> None:
 
     df = load_overview(args.input_dir)
     out = build_player_overview(df)
+
+    if args.winsorize:
+        out = winsorize_features(
+            out,
+            p_low=args.winsor_p_low,
+            p_high=args.winsor_p_high,
+            match_col="n_matches",
+            min_matches=args.winsor_min_matches,
+            exclude_cols=(
+                "player",
+                "n_matches",
+                "serve_pts",
+                "return_pts",
+                "total_pts",
+            ),
+        )
+
     out.to_parquet(args.out_dir / FILE_NAME, index=False)
 
 
