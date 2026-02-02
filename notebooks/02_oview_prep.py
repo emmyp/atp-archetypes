@@ -100,13 +100,8 @@ def build_player_overview(df: pd.DataFrame) -> pd.DataFrame:
     g["second_win_pct"] = safe_div(g["second_won"], g["second_in"])
     g["serve_pts_won_pct"] = safe_div(g["serve_pts_won"], g["serve_pts"])
 
-    # return / overall rates
+    # return rate
     g["return_pts_won_pct"] = safe_div(g["return_pts_won"], g["return_pts"])
-    g["total_pts_won_pct"] = safe_div(g["total_pts_won"], g["total_pts"])
-
-    # dominance ratio: return_points_won_% / serve_points_lost_%
-    serve_pts_lost_pct = 1 - g["serve_pts_won_pct"]
-    g["dominance_ratio"] = safe_div(g["return_pts_won_pct"], serve_pts_lost_pct)
 
     # pressure (bk_pts = break points faced)
     g["bp_save_pct"] = safe_div(g["bp_saved"], g["bk_pts"])
@@ -116,7 +111,6 @@ def build_player_overview(df: pd.DataFrame) -> pd.DataFrame:
     g["winners_per_100"] = 100 * safe_div(g["winners"], g["total_pts"])
     g["unforced_per_100"] = 100 * safe_div(g["unforced"], g["total_pts"])
     g["aggression_index"] = safe_div(g["winners"], g["winners"] + g["unforced"])
-    g["winner_to_unforced"] = safe_div(g["winners"], g["unforced"])
 
     # fh / bh mix
     g["fh_winner_share"] = safe_div(g["winners_fh"], g["winners"])
@@ -140,10 +134,8 @@ def build_player_overview(df: pd.DataFrame) -> pd.DataFrame:
         "first_win_pct",
         "second_win_pct",
         "serve_pts_won_pct",
-        # return / overall
+        # return
         "return_pts_won_pct",
-        "total_pts_won_pct",
-        "dominance_ratio",
         # pressure
         "bp_save_pct",
         "bk_pts_per_return_pt",
@@ -151,7 +143,6 @@ def build_player_overview(df: pd.DataFrame) -> pd.DataFrame:
         "winners_per_100",
         "unforced_per_100",
         "aggression_index",
-        "winner_to_unforced",
         "fh_winner_share",
         "bh_winner_share",
         "fh_ue_share",
