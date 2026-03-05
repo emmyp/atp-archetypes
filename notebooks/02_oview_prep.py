@@ -131,7 +131,7 @@ def build_player_overview(df: pd.DataFrame) -> pd.DataFrame:
         "ace_rate",
         "df_rate",
         "first_in_pct",
-        "first_win_pct",
+        "first_in_pct",
         "second_win_pct",
         "serve_pts_won_pct",
         # return
