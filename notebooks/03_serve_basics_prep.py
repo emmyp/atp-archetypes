@@ -3,7 +3,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-from utils import norm_entropy, safe_div, winsorize_features
+from utils import norm_entropy, safe_div, wavg, winsorize_features
 
 FILE_NAME = "serve_basics.parquet"
 KEYS = ["match_id", "player"]
@@ -120,23 +120,21 @@ def build_player_serve_basics(df: pd.DataFrame) -> pd.DataFrame:
             wide[f"{dname}_share_1"] - wide[f"{dname}_share_2"]
         )
 
-    # aggregate up to the player level
-    player_agg = (
-        wide.groupby("player")
-        .agg(
-            serve_win_pct_1_mean=("serve_win_pct_1", "mean"),
-            serve_win_pct_2_mean=("serve_win_pct_2", "mean"),
-            first_second_win_gap_mean=("first_second_win_gap", "mean"),
-            free_point_rate_1_mean=("free_point_rate_1", "mean"),
-            quick_win_rate_1_mean=("quick_win_rate_1", "mean"),
-            quick_win_rate_2_mean=("quick_win_rate_2", "mean"),
-            wide_share_1_mean=("wide_share_1", "mean"),
-            body_share_1_mean=("body_share_1", "mean"),
-            t_share_1_mean=("t_share_1", "mean"),
-            serve_dir_entropy_1_mean=("serve_dir_entropy_1", "mean"),
-        )
-        .reset_index()
-    )
+    # aggregate up to the player level using weighted averages
+    def agg_player_features(g: pd.DataFrame) -> pd.Series:
+        return pd.Series({
+            # "serve_win_pct_1_mean": wavg(g, "serve_win_pct_1", "pts_1"),
+            # "serve_win_pct_2_mean": wavg(g, "serve_win_pct_2", "pts_2"),
+            "first_second_win_gap_mean": wavg(g, "first_second_win_gap", "pts_total"),
+            "free_point_rate_1_mean": wavg(g, "free_point_rate_1", "pts_1"),
+            # "quick_win_rate_1_mean": wavg(g, "quick_win_rate_1", "pts_1"),
+            "quick_win_rate_2_mean": wavg(g, "quick_win_rate_2", "pts_2"),
+            # "wide_share_1_mean": wavg(g, "wide_share_1", "pts_1"),
+            # "body_share_1_mean": wavg(g, "body_share_1", "pts_1"),
+            # "t_share_1_mean": wavg(g, "t_share_1", "pts_1"),
+            "serve_dir_entropy_1_mean": wavg(g, "serve_dir_entropy_1", "pts_1"),
+        })
+    player_agg = wide.groupby("player").apply(agg_player_features, include_groups=False).reset_index()
 
     # attach match_counts and return
     out = player_agg.merge(match_counts, on="player", how="left")
@@ -145,7 +143,7 @@ def build_player_serve_basics(df: pd.DataFrame) -> pd.DataFrame:
     return out[cols].copy()
 
 def main() -> None:
-    rgs = parse_args()
+    args = parse_args()
     args.out_dir.mkdir(parents=True, exist_ok=True)
 
     df = load_serve_basics(args.input_dir)
